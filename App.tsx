@@ -1,7 +1,5 @@
 import React from 'react';
-import {Provider} from 'react-redux';
-import {store} from './src/App/store';
-import {CreativeDashboard, HomeScreen} from './src/Screens';
+import {CreativeDashboard} from './src/Screens';
 import {AppContextProvider} from './src/Contexts';
 
 const App = () => {
@@ -9,9 +7,6 @@ const App = () => {
     <AppContextProvider>
       <CreativeDashboard />
     </AppContextProvider>
-    // <Provider store={store}>
-    //   <HomeScreen />
-    // </Provider>
   );
 };
 
