@@ -60,12 +60,13 @@ const CreativeDashboard = () => {
       const data = allBoxData.filter(
         (i: any) =>
           i.color === filterColor ||
-          i.title === search ||
-          i.subTitle === search,
+          i.title.toLowerCase() === search.toLowerCase() ||
+          i.subTitle.toLowerCase() === search.toLowerCase(),
       );
       setFilterData(data);
     }
   };
+  console.log({filterColor});
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -96,7 +97,9 @@ const CreativeDashboard = () => {
                   <View style={{marginTop: 4}}>
                     <TextInput
                       placeholder="search across title or subtitle"
-                      style={[styles.inputBox, {height: 40}]}
+                      style={styles.inputBox}
+                      value={search}
+                      onChangeText={txt => setSearch(txt)}
                     />
                   </View>
                 </View>
@@ -162,8 +165,8 @@ const CreativeDashboard = () => {
                 <View
                   style={[styles.container, {backgroundColor: item?.color}]}
                   key={index}>
-                  <Text>{item.title}</Text>
-                  <Text>{item.subTitle}</Text>
+                  <Text style={styles.boxText}>{item.title}</Text>
+                  <Text style={styles.subText}>{item.subTitle}</Text>
                 </View>
               ))}
             </View>
@@ -173,8 +176,8 @@ const CreativeDashboard = () => {
                 <View
                   style={[styles.container, {backgroundColor: item?.color}]}
                   key={index}>
-                  <Text>{item.title}</Text>
-                  <Text>{item.subTitle}</Text>
+                  <Text style={styles.boxText}>{item.title}</Text>
+                  <Text style={styles.subText}>{item.subTitle}</Text>
                 </View>
               ))}
             </View>
@@ -182,67 +185,12 @@ const CreativeDashboard = () => {
         </View>
       </ScrollView>
 
-      <ModalComponent isVisible={isModalVisible} SlideWidth={'70%'}>
-        <View style={styles.modalHeader}>
-          <Text>Creative Creation</Text>
-          <Pressable onPress={() => setIsModalVisible(false)}>
-            <Text>X</Text>
-          </Pressable>
-        </View>
-        <View style={styles.modalContainer}>
-          <View style={styles.marginBox}>
-            <Text>Title :</Text>
-            <View>
-              <TextInput
-                placeholder="Enter subtitle"
-                style={styles.inputBox}
-                value={titleValue}
-                onChangeText={txt => setTitleValue(txt)}
-              />
-            </View>
-          </View>
-          <View style={styles.marginBox}>
-            <Text>SubTitle :</Text>
-            <View>
-              <TextInput
-                placeholder="Enter subtitle"
-                style={styles.inputBox}
-                value={subTitleValue}
-                onChangeText={txt => setSubTitleValue(txt)}
-              />
-            </View>
-          </View>
-          <View style={styles.marginBox}>
-            <Text>Background Colors :</Text>
-            <View style={styles.colorContainer}>
-              {allColor?.map((color, index) => (
-                <Pressable
-                  key={index}
-                  onPress={() => setSelectColor(color)}
-                  style={[
-                    styles.colorBox,
-                    {
-                      backgroundColor: color,
-                      borderColor: selectColor.includes(color)
-                        ? 'blue'
-                        : 'black',
-                    },
-                  ]}></Pressable>
-              ))}
-            </View>
-          </View>
-
-          <Pressable
-            onPress={
-              titleValue && subTitleValue && selectColor
-                ? () => handelSubmit()
-                : () => {}
-            }
-            style={styles.doneBtn}>
-            <Text style={styles.doneText}>Done</Text>
-          </Pressable>
-        </View>
-      </ModalComponent>
+      <ModalComponent
+        isVisible={isModalVisible}
+        SlideWidth={'70%'}
+        allColor={allColor}
+        setIsVisible={setIsModalVisible}
+      />
     </SafeAreaView>
   );
 };
@@ -275,6 +223,7 @@ const styles = StyleSheet.create({
   inputBox: {
     borderWidth: 1,
     borderRadius: 7,
+    height: 40,
   },
   addBtn: {
     paddingVertical: 10,
@@ -286,33 +235,6 @@ const styles = StyleSheet.create({
   },
   add: {
     paddingHorizontal: 7,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: 'violet',
-    backgroundColor: '#fff',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-  },
-  modalContainer: {
-    paddingHorizontal: 7,
-    marginTop: 10,
-  },
-  doneBtn: {
-    paddingVertical: 7,
-    width: '80%',
-    borderRadius: 7,
-    borderWidth: 1,
-    borderColor: 'gray',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 15,
-  },
-  doneText: {
-    color: 'black',
   },
   container: {
     borderWidth: 1,
@@ -351,4 +273,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   filterView: {borderBottomWidth: 1, justifyContent: 'center'},
+  boxText: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: 'white',
+  },
+  subText: {
+    color: 'white',
+    fontWeight: '400',
+  },
 });
