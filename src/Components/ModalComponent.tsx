@@ -137,8 +137,24 @@ const ModalComponent: React.FC<Props> = ({
                   ? () => handelSubmit()
                   : () => {}
               }
-              style={styles.doneBtn}>
-              <Text style={styles.doneText}>Done</Text>
+              style={[
+                styles.doneBtn,
+                {
+                  backgroundColor:
+                    titleValue && subTitleValue && selectColor
+                      ? 'blue'
+                      : 'white',
+                },
+              ]}>
+              <Text
+                style={{
+                  color:
+                    titleValue && subTitleValue && selectColor
+                      ? 'white'
+                      : 'black',
+                }}>
+                Done
+              </Text>
             </Pressable>
           </View>
         </ScrollView>
@@ -188,9 +204,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 15,
-  },
-  doneText: {
-    color: 'black',
   },
   colorBox: {
     height: 22,

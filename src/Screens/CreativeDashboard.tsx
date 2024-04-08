@@ -16,12 +16,9 @@ const CreativeDashboard = () => {
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const [search, setSearch] = useState('');
   const [filterColor, setFilterColor] = useState('');
-  const [selectColor, setSelectColor] = useState('');
-  const [titleValue, setTitleValue] = useState('');
-  const [subTitleValue, setSubTitleValue] = useState('');
   const [allColor, setAllColor] = useState([]);
   const [filterData, setFilterData] = useState([]);
-  const {allBoxData, setAllBoxData} = useAppContext();
+  const {allBoxData} = useAppContext();
   const getColor = async () => {
     try {
       const response = await fetch(
@@ -39,20 +36,6 @@ const CreativeDashboard = () => {
   useEffect(() => {
     getColor();
   }, []);
-  const handelSubmit = () => {
-    setAllBoxData([
-      ...allBoxData,
-      {
-        color: selectColor,
-        title: titleValue,
-        subTitle: subTitleValue,
-      },
-    ]);
-    setIsModalVisible(false);
-    setSubTitleValue('');
-    setTitleValue('');
-    setSelectColor('');
-  };
 
   const handelFilter = () => {
     if (filterColor || search) {
@@ -66,7 +49,6 @@ const CreativeDashboard = () => {
       setFilterData(data);
     }
   };
-  console.log({filterColor});
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -161,30 +143,42 @@ const CreativeDashboard = () => {
 
           {isFilter ? (
             <View style={styles.creativeContainer}>
-              {filterData?.map((item: any, index: any) => (
-                <View
-                  style={[styles.container, {backgroundColor: item?.color}]}
-                  key={index}>
-                  <Text style={styles.boxText}>{item.title}</Text>
-                  <Text style={styles.subText}>{item.subTitle}</Text>
+              {filterData?.length > 0 ? (
+                filterData?.map((item: any, index: any) => (
+                  <View
+                    style={[styles.container, {backgroundColor: item?.color}]}
+                    key={index}>
+                    <Text style={styles.boxText}>{item.title}</Text>
+                    <Text style={styles.subText}>{item.subTitle}</Text>
+                  </View>
+                ))
+              ) : (
+                <View style={styles.noData}>
+                  <Text style={styles.noDataText}>No Data Found</Text>
                 </View>
-              ))}
+              )}
             </View>
           ) : (
             <View style={styles.creativeContainer}>
-              {allBoxData?.map((item: any, index: any) => (
-                <View
-                  style={[styles.container, {backgroundColor: item?.color}]}
-                  key={index}>
-                  <Text style={styles.boxText}>{item.title}</Text>
-                  <Text style={styles.subText}>{item.subTitle}</Text>
+              {allBoxData?.length > 0 ? (
+                allBoxData?.map((item: any, index: any) => (
+                  <View
+                    style={[styles.container, {backgroundColor: item?.color}]}
+                    key={index}>
+                    <Text style={styles.boxText}>{item.title}</Text>
+                    <Text style={styles.subText}>{item.subTitle}</Text>
+                  </View>
+                ))
+              ) : (
+                <View style={styles.noData}>
+                  <Text style={styles.noDataText}>No Data Found</Text>
                 </View>
-              ))}
+              )}
             </View>
           )}
         </View>
       </ScrollView>
-
+      {/* Side modal */}
       <ModalComponent
         isVisible={isModalVisible}
         SlideWidth={'70%'}
@@ -281,5 +275,14 @@ const styles = StyleSheet.create({
   subText: {
     color: 'white',
     fontWeight: '400',
+  },
+  noData: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  noDataText: {
+    fontWeight: 'bold',
+    color: 'red',
   },
 });
