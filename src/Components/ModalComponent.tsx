@@ -114,7 +114,10 @@ const ModalComponent: React.FC<Props> = ({
                       key={index}
                       style={[
                         styles.bgBox,
-                        {borderWidth: selectColor.includes(color) ? 2 : 0},
+                        {
+                          borderWidth: selectColor.includes(color) ? 2 : 0,
+                          borderRadius: selectColor.includes(color) ? 60 : 0,
+                        },
                       ]}>
                       <Pressable
                         key={index}
@@ -230,7 +233,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
-    borderRadius: 20,
   },
 });
 

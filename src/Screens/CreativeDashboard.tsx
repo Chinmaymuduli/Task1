@@ -64,13 +64,25 @@ const CreativeDashboard = () => {
                   <Text style={styles.text}>Color :</Text>
                   <View style={styles.colorContainer}>
                     {allColor?.map((color, index) => (
-                      <Pressable
+                      <View
                         key={index}
-                        onPress={() => setFilterColor(color)}
                         style={[
-                          styles.colorBox,
-                          {backgroundColor: color},
-                        ]}></Pressable>
+                          styles.bgBox,
+                          {
+                            borderWidth: filterColor.includes(color) ? 2 : 0,
+                            borderRadius: filterColor.includes(color) ? 60 : 0,
+                          },
+                        ]}>
+                        <Pressable
+                          key={index}
+                          onPress={() => setFilterColor(color)}
+                          style={[
+                            styles.colorBox,
+                            {
+                              backgroundColor: color,
+                            },
+                          ]}></Pressable>
+                      </View>
                     ))}
                   </View>
                 </View>
@@ -208,7 +220,6 @@ const styles = StyleSheet.create({
     width: 22,
     borderRadius: 20,
     borderWidth: 1,
-    marginRight: 10,
   },
   colorContainer: {
     flexDirection: 'row',
@@ -284,5 +295,12 @@ const styles = StyleSheet.create({
   noDataText: {
     fontWeight: 'bold',
     color: 'red',
+  },
+  bgBox: {
+    height: 30,
+    width: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
   },
 });
