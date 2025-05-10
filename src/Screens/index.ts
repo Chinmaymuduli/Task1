@@ -1,1 +1,1 @@
-export {default as CreativeDashboard} from './CreativeDashboard';
+export {default as HomeScreen} from './HomeScreen';
